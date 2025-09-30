@@ -37,7 +37,6 @@
       ],
       "datasourceTemplate": "custom.pypi",
       "versioningTemplate": "pep440",
-      "autoReplaceStringTemplate": "{{{pre}}}{{{newVersion}}}{{{mid}}}sha256 = [\"{{{newDigest}}}\"]{{{end}}})"
     }
   ]
 }
