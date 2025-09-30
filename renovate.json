@@ -1,0 +1,43 @@
+{
+  "enabledManagers": ["custom.regex"],
+  "prHourlyLimit": 0,
+  "commitMessageTopic": "{{depName}} ({{ replace '^custom\\.' '' datasource}} dependency)",
+  "commitMessageExtra": "to {{newValue}}",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "enabled": false
+    }
+  ],
+  "customDatasources": {
+    // Renovate's PyPI datasource doesn't expose hashes, so we need to get them with a custom datasource
+    "pypi": {
+      "defaultRegistryUrlTemplate": "https://pypi.org/pypi/{{packageName}}/json",
+      "format": "json",
+      "transformTemplates": [
+        "{ \"releases\": $map($keys(releases), function($v){( $files := $lookup(releases, $v); $sdist := $filter($files, function($f){ $f.packagetype = \"sdist\" })[0]; { \"version\": $v, \"digest\": $sdist.digests.sha256 } ) }) }"
+      ]
+    }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Custom matcher for Bazel BUILD files with PyPI dependencies",
+      "managerFilePatterns": ["/^pip/[^/]+/BUILD$/"],
+      "matchStrings": [
+        "(?<pre>(?:dbx_desktop_py_pypi_piplib|dbx_py_pypi_piplib)\\([\\s\\S]*?name\\s*=\\s*\"(?<depName>[^\"]+)\"[\\s\\S]*?pip_version\\s*=\\s*\")(?<currentValue>[^\"]+)(?<mid>[\\s\\S]*?)(?:sha256\\s*=\\s*\\[\"(?<currentDigest>[a-fA-F0-9]+)\"\\])(?<end>[\\s\\S]*?\\))"
+      ],
+      "datasourceTemplate": "custom.pypi",
+      "versioningTemplate": "pep440",
+      "autoReplaceStringTemplate": "{{{pre}}}{{{newValue}}}{{{mid}}}sha256 = [\"{{{newDigest}}}\"]{{{end}}})"
+    }
+  ]
+}
