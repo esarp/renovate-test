@@ -6,13 +6,13 @@ licenses(["notice"])  # MIT
 
 dbx_py_pypi_piplib(
     name = "setuptools_scm",
-    pip_version = "8.0.4",
+    pip_version = "8.3.1",
     setup_requires = [
         "//pip/setuptools",
         "//pip/tomli",
         "//pip/packaging",
     ],
-    sha256 = ["b5f43ff6800669595193fd09891564ee9d1d7dcb196cab4b2506d53a2e1c95c7"],
+    sha256 = ["3d555e92b75dacd037d32bafdf94f97af51ea29ae8c7b234cf94b7a5bd242a63"],
     deps = [
         "//pip/packaging",
         "//pip/setuptools",
