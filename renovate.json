@@ -36,7 +36,7 @@
         "(?<pre>(?:dbx_desktop_py_pypi_piplib|dbx_py_pypi_piplib)\\([\\s\\S]*?name\\s*=\\s*\"(?<depName>[^\"]+)\"[\\s\\S]*?pip_version\\s*=\\s*\")(?<currentValue>[^\"]+)(?<mid>[\\s\\S]*?)(?:sha256\\s*=\\s*\\[\"(?<currentDigest>[a-fA-F0-9]+)\"\\])(?<end>[\\s\\S]*?\\))"
       ],
       "datasourceTemplate": "custom.pypi",
-      "versioningTemplate": "pep440",
+      "versioningTemplate": "pep440"
     }
   ]
 }
